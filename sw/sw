@@ -51,7 +51,7 @@ _header_
 	# Footer
 	cat << _footer_
 <div id="footer">
-<div class="right">powered by<a href="http://nibble.develsec.org/projects/sw.html"><strong>sw</strong</a> and <a href="http://s01.de/~tox/index.cgi/proj_smu"><strong>smu</strong></div>
+<div class="right">powered by <a href="http://nibble.develsec.org/projects/sw.html"><strong>sw</strong</a> and <a href="http://s01.de/~tox/index.cgi/proj_smu"><strong>smu</strong></div>
 </div>
 </body>
 </html>
