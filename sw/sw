@@ -6,12 +6,14 @@ sw_main() {
 }
 
 sw_menu() {
+        echo "menu top"
 	BL=`echo "$BL" | sed -e "s/ \+\|^/ -e /g"`
 	echo "<ul>"
 	[ -z "`echo $1 | grep index.md`" ] && echo "<li><a href=\"index.html\">.</a></li>"
 	[ "`dirname $1`" != "." ] && echo "<li><a href=\"../index.html\">..</a></li>"
 	FILES=`ls \`dirname $1\` | grep -v $BL | grep -v index | sed -e 's,.md$,.html,g'`
 	for i in $FILES ; do
+                echo "adding $i"
 		NAME=`echo $i | sed -e 's/\..*$//' -e 's/_/ /g'`
 		[ -z "`echo $i | grep '\..*$'`" ] && i="$i/index.html"
 		echo "<li><a href=\"$i\">$NAME</a></li>"
