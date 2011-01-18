@@ -1,0 +1,9 @@
+# sw - suckless webframework - 2010 - nibble <develsec.org>
+
+# Configuration
+TITLE="foo.org"          # Site title
+SUBTITLE=""              # Site subtitle
+BL="^index.md$ ^images$" # Black list
+STYLE="style.css"        # Stylesheet name
+# External apps
+MDHANDLER="/usr/local/bin/md2html.awk" # md handler

@@ -1,0 +1,13 @@
+data/.hgtags.i
+data/Makefile.i
+data/README.i
+data/config.apache2.i
+data/doc/config.apache2.i
+data/md2html.awk.i
+data/style.css.i
+data/style.old.css.i
+data/sw.i
+data/sw.cgi.i
+data/sw.conf.def.i
+data/sw.gen.i
+data/whereis.i

@@ -1,0 +1,14 @@
+data/.hgtags.i
+data/LICENSE.i
+data/Makefile.i
+data/cmarkdown.1.i
+data/cmarkdown.c.i
+data/config.mk.i
+data/documentation.i
+data/libsmu.c.i
+data/markdown.c.i
+data/smu.1.i
+data/smu.c.i
+data/smu.h.i
+data/smutest.i
+data/testdoc.i
