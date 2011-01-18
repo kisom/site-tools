@@ -7,7 +7,7 @@ SITE=site
 
 # ensure RHOST has a trailing slash!
 #     e.g. foo@spam:baz/
-RHOST=kisom@brokenlcd.net:brokenlcd/ 
+RHOST=user@example.net:/var/www/site/htdocs
 
 # don't touch - we need this for sw to work properly
 BASE=$(PWD) 
@@ -21,15 +21,18 @@ site-gen:
 	sw $(BASE)/$(SITE)
 	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
 
-site-push:
+site-push: 
 	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
 
 clean:
 	rm -rf $(SITE).static
 
 target-list:
-	echo "valid targets:"
-	echo "	site-gen: build site and push it "
+	@echo "valid targets:"
+	@echo "	site-gen:  build site and push it "
+	@echo " site-push: rsync site to RHOST"
+	@echo " clean:     remove \$(SITE).static"
+	@echo " "
 
 
 .PHONY: all clean site-gen
