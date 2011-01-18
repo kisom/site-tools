@@ -13,3 +13,5 @@ install:
 	chmod +x ${P}/bin/md2html.awk
 	cp -f sw ${P}/bin/sw
 	chmod +x ${P}/bin/sw
+clean:
+	rm sw.conf
