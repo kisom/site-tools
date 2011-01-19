@@ -15,13 +15,13 @@ BASE=$(PWD)
 
 ### shouldn't need to modify anything below these lines ###
 
-all:	site-gen site-push
+all:	site
 
-site-gen:
+site:
 	sw $(BASE)/$(SITE)
 	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
 
-site-push: 
+install: 
 	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
 
 clean:
@@ -29,9 +29,9 @@ clean:
 
 target-list:
 	@echo "valid targets:"
-	@echo "	site-gen:  build site and push it "
-	@echo " site-push: rsync site to RHOST"
-	@echo " clean:     remove \$(SITE).static"
+	@echo "	site:  	 build site and push it "
+	@echo " install: rsync site to RHOST"
+	@echo " clean:   remove \$(SITE).static"
 	@echo " "
 
 
