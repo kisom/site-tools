@@ -7,10 +7,10 @@ SITE=site
 
 # ensure RHOST has a trailing slash!
 #     e.g. foo@spam:baz/
-RHOST=user@example.net:/var/www/site/htdocs
+RHOST=user@example.net:/var/www/site/htdocs/
 
 # don't touch - we need this for sw to work properly
-BASE=$(PWD) 
+BASE="$(PWD)"
 
 
 ### shouldn't need to modify anything below these lines ###
@@ -19,7 +19,6 @@ all:	site
 
 site:
 	sw $(BASE)/$(SITE)
-	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
 
 install: 
 	rsync -auvz -e "ssh" $(SITE).static/ $(RHOST)
