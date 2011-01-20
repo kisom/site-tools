@@ -10,7 +10,7 @@ SITE=site
 RHOST=user@example.net:/var/www/site/htdocs/
 
 # don't touch - we need this for sw to work properly
-TARGET="$(PWD)/$(site)"
+TARGET="$(PWD)/$(SITE)"
 
 
 ### shouldn't need to modify anything below these lines ###
