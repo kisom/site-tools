@@ -86,11 +86,11 @@ ODIR="$CDIR/`basename $IDIR`.static"
 rm -rf $ODIR
 mkdir -p $ODIR
 cp -rf $IDIR/* $ODIR
-rm -f `find $ODIR -type f -iname '*.md'`
+find $ODIR -type f -iname \*.md -exec rm -f '{}' \;
 
 # Parse files
 cd $IDIR
-FILES=`find -iname '*.md' | sed -e 's,^\./,,'`
+FILES=`find ./ -iname '*.md' | sed -e 's,^\./,,'`
 for a in $FILES; do
 	b="$ODIR/`echo $a | sed -e 's,.md$,.html,g'`"
 	echo "* $a"
