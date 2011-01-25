@@ -17,6 +17,7 @@ echo " * edit SITE and RHOST in $1/Makefile"
 echo " * edit $1/sw.conf with your site title"
 echo " * edit $1/style.css as desired"
 echo " * start writing your site! suggest adding $1/site-src/index.md first"
+echo " * you might consider version controlling your site."
 
 exit 0
 

@@ -1,0 +1,40 @@
+#!/bin/sh
+# .:[ rawk - rage against web frameworks ]:.
+# 
+# generates a static content from a tree of markdown files and other content
+# 
+
+build_header () {
+
+    HEADER=$(cat ${HEADER_FILE} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
+                                          s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
+    
+    return ${HEADER}
+}
+
+build_submenu () {
+
+}
+
+build_page () {
+    # clear out vars
+    HEADER=""
+    SUBMENU=""
+    PAGE=""
+    BODY=""
+    FOOTER=""
+
+
+    build_header
+    build_submenu
+    PAGE="$HEADER$MENU"
+    
+    BODY=$(smu basename $1)
+    PAGE="$PAGE$BODY"
+
+    build_footer
+
+    PAGE="$PAGE$FOOTER"
+    
+}
+
