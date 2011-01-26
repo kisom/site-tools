@@ -2,6 +2,8 @@
 # .:[ rawk - rage against web frameworks ]:.
 # 
 # generates a static content from a tree of markdown files and other content
+# originally written by 4096R/B7B720D6  "Kyle Isom <coder@kyleisom.net>"
+# based on the suckless webframework (sw) by nibblesec
 # 
 
 CONF_FILE="rawkrc"
@@ -15,8 +17,8 @@ usage () {
 
 build_header () {
 
-    HEADER=$(cat ${HEADER_FILE} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
-                                          s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
+    HEADER=$(cat ${HDR_TPL} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
+                                      s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
 }
 
 build_submenu () {
@@ -44,12 +46,14 @@ build_page () {
     build_submenu
     PAGE="$HEADER$MENU"
     
-    BODY=$(smu basename $1)
+    BODY=$($MDPARSER basename $1)
     PAGE="$PAGE$BODY"
 
     build_footer
 
     PAGE="$PAGE$FOOTER"
+
+    echo $PAGE > 
     
 }
 
