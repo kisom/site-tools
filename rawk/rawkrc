@@ -3,4 +3,5 @@ BL="$BL ^.\+rc$"
 MDPARSER=smu
 HDR_TPL="templates/hdr.tpl"
 FTR_TPL="templates/ftr.tpl"
-MENU_TPL="templates/menu.tpl"
+TITLE="rage against web frameworks"
+SUBTITLE="lynx friendly"
