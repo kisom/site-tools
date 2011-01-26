@@ -4,16 +4,31 @@
 # generates a static content from a tree of markdown files and other content
 # 
 
+CONF_FILE="rawkrc"
+SRC_DIR="$1"
+
+
+usage () {
+    echo "usage: $0 <source dir>"
+    exit 0
+}
+
 build_header () {
 
     HEADER=$(cat ${HEADER_FILE} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
                                           s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
-    
-    return ${HEADER}
 }
 
 build_submenu () {
+    FC=""               # filter chain
+    FILE_LIST=""
 
+    for filter in $BL
+    do
+        FC="$FC | grep -v '$filter'"
+    done
+
+    FILE_LIST=$(eval ls -1 $SRC_DIR $FC | sort | xargs)
 }
 
 build_page () {
@@ -38,3 +53,19 @@ build_page () {
     
 }
 
+# source config file and check valid targets and source dirs
+. ./$CONF_FILE
+if [ -z ${SRC_DIR} ]; then
+    usage
+fi
+
+if [ -z ${TARGET} ]; then
+    TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
+fi
+
+
+
+
+build_submenu
+cd ${TARGET}
+find ./ -iname \*.md -type f -exec rm -f '{}' \;
