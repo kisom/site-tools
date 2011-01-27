@@ -26,13 +26,20 @@ build_header () {
 build_submenu () {
     FC=""               # filter chain
     FILE_LIST=""
+    SUBMENU="<div id=\"side-bar\">"
 
     for filter in $BL
     do
         FC="$FC | grep -v '$filter'"
     done
 
-    FILE_LIST=$(eval ls -1 $SRC_DIR $FC | sort | xargs)
+    FILE_LIST=$(eval ls -1 $(dirname $CUR) $FC | sort | xargs)
+    for FILE in $FILE_LIST
+    do
+        SUBMENU="$SUBMENU<a href=\"$(basename $FILE)\">"
+        FILE="$(basename $FILE | sed -ne 's/(.\+)\.[A-Za-z0-9]\+/\1/')"
+        SUBMENU="$SUBMENU$FILE</a> "
+
 }
 
 build_page () {
@@ -42,7 +49,6 @@ build_page () {
     PAGE=""
     BODY=""
     FOOTER=""
-
 
     build_header
     build_submenu
@@ -55,7 +61,7 @@ build_page () {
 
     PAGE="$PAGE$FOOTER"
 
-    echo $PAGE > 
+    echo $PAGE >
     
 }
 
@@ -69,8 +75,8 @@ if [ -z ${TARGET} ]; then
     TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
 fi
 
-
-
+cp -r ${SRC_DIR} ${TARGET}
+cd ${TARGET}
 
 build_submenu
 cd ${TARGET}
