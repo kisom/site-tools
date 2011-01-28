@@ -11,7 +11,6 @@
 CONF_FILE="rawkrc"
 SRC_DIR="$1"
 
-
 usage () {
     echo "usage: $0 <source dir>"
     exit 0
@@ -39,7 +38,7 @@ build_submenu () {
         SUBMENU="$SUBMENU<a href=\"$(basename $FILE)\">"
         FILE="$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')"
         SUBMENU="$SUBMENU$FILE</a> "
-
+    done
 }
 
 build_page () {
@@ -50,6 +49,7 @@ build_page () {
     BODY=""
     FOOTER=""
 
+    # build page
     build_header
     build_submenu
     PAGE="$HEADER$MENU"
@@ -61,7 +61,7 @@ build_page () {
 
     PAGE="$PAGE$FOOTER"
 
-    echo $PAGE >
+    echo $PAGE > $CUR_FILE
     
 }
 
