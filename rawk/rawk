@@ -20,7 +20,7 @@ usage () {
 
 rawk_header () {
     HEADER=""
-    PAGETITLE="$(basename $1 | sed -e 's/\(.\+\)
+    PAGETITLE="$(basename $1 | sed -e 's/\(.\+\)\..\+/\1/')t you'"
 
     print $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/ ; 
                                      s/\$\{SUBTITLE\}/$SITE_SUBTITLE"
