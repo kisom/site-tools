@@ -19,14 +19,14 @@ usage () {
 
 build_header () {
 
-    HEADER=$(cat ${HDR_TPL} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
-                                      s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
+    print $(cat ${HDR_TPL} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
+                                     s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
 }
 
 build_submenu () {
     FC=""               # filter chain
     FILE_LIST=""
-    SUBMENU="<div id=\"side-bar\">"
+    print "<div id=\"side-bar\">"
 
     for filter in $BL
     do
@@ -36,33 +36,24 @@ build_submenu () {
     FILE_LIST=$(eval ls -1 $(dirname $CUR) $FC | sort | xargs)
     for FILE in $FILE_LIST
     do
-        SUBMENU="$SUBMENU<a href=\"$(basename $FILE)\">"
-        FILE="$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')"
-        SUBMENU="$SUBMENU$FILE</a> "
+        print "$SUBMENU<a href=\"$(basename $FILE)\">"
+        print "$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')</a> \n"
+    done
 
 }
 
 build_page () {
     # clear out vars
-    HEADER=""
-    SUBMENU=""
     PAGE=""
-    BODY=""
     FOOTER=""
 
     build_header
     build_submenu
-    PAGE="$HEADER$MENU"
     
-    BODY=$($MDPARSER basename $1)
-    PAGE="$PAGE$BODY"
+    print $($MDPARSER $(basename $1))
 
     build_footer
 
-    PAGE="$PAGE$FOOTER"
-
-    echo $PAGE >
-    
 }
 
 # source config file and check valid targets and source dirs
@@ -75,9 +66,10 @@ if [ -z ${TARGET} ]; then
     TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
 fi
 
+# copy over target dir
 cp -r ${SRC_DIR} ${TARGET}
 cd ${TARGET}
 
-build_submenu
-cd ${TARGET}
-find ./ -iname \*.md -type f -exec rm -f '{}' \;
+# here's where we need to load in the list of files
+# and convert md->html
+
