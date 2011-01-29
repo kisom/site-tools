@@ -17,13 +17,15 @@ usage () {
     exit 0
 }
 
-build_header () {
+rawk_header () {
+    HEADER=""
 
-    print $(cat ${HDR_TPL} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
-                                     s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
+    print $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/ ; 
+                                     s/\$\{SUBTITLE\}/$SITE_SUBTITLE"
+    )
 }
 
-build_submenu () {
+rawk_submenu () {
     FC=""               # filter chain
     FILE_LIST=""
     print "<div id=\"side-bar\">"
@@ -42,17 +44,17 @@ build_submenu () {
 
 }
 
-build_page () {
+rawk_page () {
     # clear out vars
     PAGE=""
     FOOTER=""
 
-    build_header
-    build_submenu
+    rawk_header
+    rawk_submenu
     
     print $($MDPARSER $(basename $1))
 
-    build_footer
+    rawk_footer
 
 }
 
@@ -72,4 +74,7 @@ cd ${TARGET}
 
 # here's where we need to load in the list of files
 # and convert md->html
+for SRC_F in $(find ${TARGET} -iname \*.md -print | xargs)
+do
+    rawk_page 
 
