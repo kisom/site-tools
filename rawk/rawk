@@ -5,8 +5,9 @@
 # originally written by 4096R/B7B720D6  "Kyle Isom <coder@kyleisom.net>"
 # based on the suckless webframework (sw) by nibblesec
 # 
-# released as public domain software - for curiosity's sake, i'd be interested in hearing
-# if you take this and tinker with it, though you are far from obligated to do so.
+# released as public domain software - for curiosity's sake, i'd be interested 
+# in hearing if you take this and tinker with it, though you are far from 
+# obligated to do so.
 
 CONF_FILE="rawkrc"
 SRC_DIR="$1"
@@ -19,6 +20,7 @@ usage () {
 
 rawk_header () {
     HEADER=""
+    PAGETITLE="$(basename $1 | sed -e 's/\(.\+\)
 
     print $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/ ; 
                                      s/\$\{SUBTITLE\}/$SITE_SUBTITLE"
