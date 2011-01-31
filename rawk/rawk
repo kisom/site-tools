@@ -25,7 +25,7 @@ rawk_header () {
     echo $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/"         \
                                 -e "s/\$\{SUBTITLE\}/$SITE_SUBTITLE "   \
 				-e "s/\$\{STYLE\}/$CSS_DATA/"           \
-      			            s/\$\{PAGETITLE\}/$PAGE_TITLE"
+      			        -e "s/\$\{PAGETITLE\}/$PAGE_TITLE"
     ")
 }
 
