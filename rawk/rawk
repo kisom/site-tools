@@ -19,16 +19,19 @@ usage () {
 
 rawk_header () {
     PAGE_TITLE="$(basename $1 | sed -e 's/^\(..*\)\...*$/\1/')" # get pagename
-    if [ -n "$STYLESHEET" ]; then
+    ROOT_LINK="$(dirname $1 | sed -e "s|^\./||" \
+                                  -e "s|[^/]*|..|")"
+    echo "ROOT LINK: $ROOT_LINK"
+    if [ -z "$STYLESHEET" ]; then
         echo "read stylesheet '$STYLESHEET'"
-        CSS_DATA="$(cat $STYLESHEET)"
+        CSS_DATA="$(cat $STYLESHEET | sed -e 's/"/\\"/g')"
     fi
 
     # sedden death
-    echo $(cat ${HDR_TPL} | sed -e "s/\${TITLE}/$SITE_TITLE/g"              \
-                                -e "s/\${SUBTITLE}/$SITE_SUBTITLE/"         \
-				-e "s/\${STYLE}/$CSS_DATA/"                 \
-                                -e "s|\${ROOT_LINK}|$(dirname $1)/index.html|" 
+    echo $(cat ${HDR_TPL} | sed -e "s|\${TITLE}|$SITE_TITLE|g"              \
+                                -e "s|\${SUBTITLE}|$SITE_SUBTITLE|"         \
+				-e "s|\${STYLE}|$CSS_DATA|"                 \
+                                -e "s|\${ROOT_LINK}|$ROOT_LINK/|"
     )
 }
 
@@ -105,6 +108,7 @@ rawk_main () {
 . ./$CONF_FILE
 START="$(pwd)"
 HDR_TPL="$(pwd)/$HDR_TPL"
+STYLESHEET="$(pwd)/$STYLESHEET"
 cd $1
 for MDF in $(find ./ -iname \*.md -print | xargs)
 do
