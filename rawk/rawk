@@ -36,15 +36,13 @@ rawk_submenu () {
     FC="| grep -v '^$(basename $1)\$'"    # filter chain
     FILE_LIST=""
     echo "<div id=\"side-bar\">"
+    echo "<a href=\"index.html\">.</a> "
 
     for filter in $BL
     do
         FC="$FC | grep -v '$filter'"
     done
     
-    echo 'filter chain: ' $FC
-
-    echo 'getting file list'
     FILE_LIST=$(eval ls -1 $(dirname $1) $FC | sort | xargs)
     for FILE in $FILE_LIST
     do
