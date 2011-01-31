@@ -23,8 +23,6 @@ rawk_header () {
         echo "read stylesheet '$STYLESHEET'"
         CSS_DATA="$(cat $STYLESHEET)"
     fi
-    echo "SITE TITLE: $SITE_TITLE"
-    echo "SUBTITLE:   $SITE_SUBTITLE"
 
     # sedden death
     echo $(cat ${HDR_TPL} | sed -e "s/\${TITLE}/$SITE_TITLE/g"              \
@@ -59,11 +57,11 @@ rawk_page () {
     FOOTER=""
 
     rawk_header $1
-    rawk_submenu
+    rawk_submenu $1
     
     $MDPARSER $1
 
-    rawk_footer
+    rawk_footer $1
 }
 
 rawk_main () {
@@ -105,9 +103,14 @@ rawk_main () {
 
 # source config file and check valid targets and source dirs
 . ./$CONF_FILE
-for MDF in $(find $1 -iname \*.md -print | xargs)
+START="$(pwd)"
+HDR_TPL="$(pwd)/$HDR_TPL"
+cd $1
+for MDF in $(find ./ -iname \*.md -print | xargs)
 do
     echo "* $MDF"
     rawk_header $MDF
 done
-rawk_main $@
+
+cd $START
+#rawk_main $@
