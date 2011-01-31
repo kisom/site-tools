@@ -65,18 +65,26 @@ rawk_page () {
 
 # source config file and check valid targets and source dirs
 . ./$CONF_FILE
-if [ -z ${SRC_DIR} ]; then
+
+if [ -n "$1" ]; then
+    SRC_DIR="$1"
+fi
+
+if [ -n "$2" ]; tjen 
+    TARGET="$2"
+fi
+
+if [ -z "${SRC_DIR}" ]; then
     usage
 fi
 
-if [ -z ${TARGET} ]; then
+if [ -z "${TARGET}" ]; then
     TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
 fi
 
 # copy over target dir
 cp -r ${SRC_DIR} ${TARGET}
 cd ${TARGET}
-
 
 # here's where we need to load in the list of files
 # and convert md->html
