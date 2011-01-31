@@ -5,8 +5,9 @@
 # originally written by 4096R/B7B720D6  "Kyle Isom <coder@kyleisom.net>"
 # based on the suckless webframework (sw) by nibblesec
 # 
-# released as public domain software - for curiosity's sake, i'd be interested in hearing
-# if you take this and tinker with it, though you are far from obligated to do so.
+# released as public domain software - for curiosity's sake, i'd be interested 
+# in hearing if you take this and tinker with it, though you are far from 
+# obligated to do so.
 
 CONF_FILE="rawkrc"
 SRC_DIR="$1"
@@ -16,16 +17,22 @@ usage () {
     exit 0
 }
 
-build_header () {
+rawk_header () {
+    HEADER=""
+    PAGE_TITLE="$(basename $1 | sed -e 's/^\(..*\)\...*$/\1/')" # get pagename
+    CSS_DATA="$(cat $STYLESHEET)"
 
-    HEADER=$(cat ${HDR_TPL} | sed -e 's/\$\{TITLE\}/$SITE_TITLE/ ; 
-                                      s/\$\{SUBTITLE\}/$SITE_SUBTITLE')
+    echo $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/"         \
+                                -e "s/\$\{SUBTITLE\}/$SITE_SUBTITLE "   \
+				-e "s/\$\{STYLE\}/$CSS_DATA/"           \
+      			            s/\$\{PAGETITLE\}/$PAGE_TITLE"
+    ")
 }
 
-build_submenu () {
+rawk_submenu () {
     FC=""               # filter chain
     FILE_LIST=""
-    SUBMENU="<div id=\"side-bar\">"
+    echo "<div id=\"side-bar\">"
 
     for filter in $BL
     do
@@ -35,34 +42,45 @@ build_submenu () {
     FILE_LIST=$(eval ls -1 $(dirname $CUR) $FC | sort | xargs)
     for FILE in $FILE_LIST
     do
+<<<<<<< HEAD
         SUBMENU="$SUBMENU<a href=\"$(basename $FILE)\">"
         FILE="$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')"
         SUBMENU="$SUBMENU$FILE</a> "
     done
+=======
+        echo "$SUBMENU<a href=\"$(basename $FILE)\">"
+        echo "$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')</a> \n"
+    done
+    echo 
+>>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
 }
 
-build_page () {
+rawk_page () {
     # clear out vars
-    HEADER=""
-    SUBMENU=""
     PAGE=""
-    BODY=""
     FOOTER=""
 
+<<<<<<< HEAD
     # build page
     build_header
     build_submenu
     PAGE="$HEADER$MENU"
+=======
+    rawk_header $1
+    rawk_submenu
+>>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
     
-    BODY=$($MDPARSER basename $1)
-    PAGE="$PAGE$BODY"
+    echo $($MDPARSER $1)
 
-    build_footer
+    rawk_footer
 
+<<<<<<< HEAD
     PAGE="$PAGE$FOOTER"
 
     echo $PAGE > $CUR_FILE
     
+=======
+>>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
 }
 
 # source config file and check valid targets and source dirs
@@ -75,9 +93,14 @@ if [ -z ${TARGET} ]; then
     TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
 fi
 
+# copy over target dir
 cp -r ${SRC_DIR} ${TARGET}
 cd ${TARGET}
 
-build_submenu
-cd ${TARGET}
-find ./ -iname \*.md -type f -exec rm -f '{}' \;
+
+# here's where we need to load in the list of files
+# and convert md->html
+for SRC_F in $(find ${TARGET} -iname \*.md -echo | xargs)
+do
+    rawk_page 
+
