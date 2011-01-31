@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>${PAGETITLE}</title>
+<title>${TITLE}</title>
 <link rel="icon" href="/favicon.png" type="image/png">
 <meta charset="UTF-8">
 ${STYLESHEET}
