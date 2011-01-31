@@ -4,7 +4,7 @@
 <title>${TITLE}</title>
 <link rel="icon" href="/favicon.png" type="image/png">
 <meta charset="UTF-8">
-${STYLESHEET}
+<link rel="stylesheet" type="text/css" href="${SITE_ROOT}styles/style.css">
 </head>
 <body>
 <div class="header">
