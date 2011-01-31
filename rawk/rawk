@@ -22,15 +22,17 @@ rawk_header () {
     PAGE_TITLE="$(basename $1 | sed -e 's/^\(..*\)\...*$/\1/')" # get pagename
     CSS_DATA="$(cat $STYLESHEET)"
 
-    echo $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/"         \
-                                -e "s/\$\{SUBTITLE\}/$SITE_SUBTITLE "   \
-				-e "s/\$\{STYLE\}/$CSS_DATA/"           \
-      			        -e "s/\$\{PAGETITLE\}/$PAGE_TITLE"
-    ")
+    # sedden death
+    echo $(cat ${HDR_TPL} | sed -e "s/\$\{TITLE\}/$SITE_TITLE/"               \
+                                -e "s/\$\{SUBTITLE\}/$SITE_SUBTITLE "         \
+				-e "s/\$\{STYLE\}/$CSS_DATA/"                 \
+      			        -e "s/\$\{PAGETITLE\}/$PAGE_TITLE"            \
+                                -e "s|\${ROOT_LINK}|$(dirname $1)/index.html|" 
+    )
 }
 
 rawk_submenu () {
-    FC=""               # filter chain
+    FC="| grep -v ^$1\$"    # filter chain
     FILE_LIST=""
     echo "<div id=\"side-bar\">"
 
@@ -42,17 +44,10 @@ rawk_submenu () {
     FILE_LIST=$(eval ls -1 $(dirname $CUR) $FC | sort | xargs)
     for FILE in $FILE_LIST
     do
-<<<<<<< HEAD
-        SUBMENU="$SUBMENU<a href=\"$(basename $FILE)\">"
-        FILE="$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')"
-        SUBMENU="$SUBMENU$FILE</a> "
+        echo -n "<a href=\"$(basename $FILE)\">"
+        echo -n "$(basename $FILE | sed -e 's/(..*)\.[[:alnum:]]\+/\1/')"
+        echo "</a> "
     done
-=======
-        echo "$SUBMENU<a href=\"$(basename $FILE)\">"
-        echo "$(basename $FILE | sed -e 's/(.\+)\.[A-Za-z0-9]\+/\1/')</a> \n"
-    done
-    echo 
->>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
 }
 
 rawk_page () {
@@ -60,27 +55,12 @@ rawk_page () {
     PAGE=""
     FOOTER=""
 
-<<<<<<< HEAD
-    # build page
-    build_header
-    build_submenu
-    PAGE="$HEADER$MENU"
-=======
     rawk_header $1
     rawk_submenu
->>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
     
-    echo $($MDPARSER $1)
+    $MDPARSER $1
 
     rawk_footer
-
-<<<<<<< HEAD
-    PAGE="$PAGE$FOOTER"
-
-    echo $PAGE > $CUR_FILE
-    
-=======
->>>>>>> 84ec1798967b80ec71e7dbdd4833d07a4f250e56
 }
 
 # source config file and check valid targets and source dirs
@@ -102,5 +82,6 @@ cd ${TARGET}
 # and convert md->html
 for SRC_F in $(find ${TARGET} -iname \*.md -echo | xargs)
 do
-    rawk_page 
-
+    OUT_F="$(echo $SRC_F | sed -e 's/([[:alnum:]]{1,})\.[mM][dD]/\1/').html"
+    rawk_page $SRC_F > $OUT_F
+done
