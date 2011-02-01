@@ -40,7 +40,7 @@ rawk_submenu () {
     echo "<a href=\"index.html\">.</a> "
 
     # parent
-    if [ -n "$(cat $(dirname $1) | sed -s \"s|$SRC_DIR||\")" ]; then
+    if [ ! "$(dirname $1)" = "." ]; then
         echo "<a href=\"../index.html\">..</a> "
     fi
 
@@ -49,7 +49,8 @@ rawk_submenu () {
         FC="$FC | grep -v '$filter'"
     done
     
-    FILE_LIST=$(eval ls -1 $(dirname $1) $FC | sort | xargs)
+    FILE_LIST=$(eval ls -1 $(dirname $1) $FC | sort )
+    FILE_LIST="$(echo $FILE_LIST | sed -e 's/\.md /\.html /g' | uniq | sort)"
     for FILE in $FILE_LIST
     do
         echo -n "<a href=\"$(basename $FILE)\">"
@@ -108,7 +109,7 @@ rawk_main () {
     for SRC_F in $(find ./ -iname \*.md -print | xargs)
 
     do
-        OUT_F="$(echo $SRC_F | sed -e 's/([[:alnum:]]{1,})\.[mM][dD]/\1/').html"
+        OUT_F="$(echo $SRC_F | sed -e 's/([[:alnum:]]*)\.[mM][dD]/\1/').html"
         rawk_page $SRC_F > $OUT_F
     done
 
@@ -121,12 +122,6 @@ HDR_TPL="$(pwd)/$HDR_TPL"
 FTR_TPL="$(pwd)/$FTR_TPL"
 STYLESHEET="$(cat $STYLESHEET | sed -s s\|\${SITE_ROOT}\|$SITE_ROOT\|)"
 
-cd $1
-for MDF in $(find ./ -iname \*.md -print | xargs)
-do
-    echo "* $MDF"
-    rawk_submenu $MDF
-done
+rawk_main $@
 
 cd $START
-#rawk_main $@
