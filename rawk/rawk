@@ -48,11 +48,11 @@ rawk_submenu () {
         FC="$FC | grep -v '$filter'"
     done
     
-    FILE_LIST=$(eval ls -1 $(dirname $1) $FC | sort )
-    FILE_LIST="$(echo $FILE_LIST | sed -e 's/\.md /\.html /g' | uniq | sort)"
+    FILE_LIST="$(eval ls -1 $(dirname $1) $FC )"
+    FILE_LIST="$(echo $FILE_LIST | sed -e 's/\.md /\.html /g' | uniq | sort | xargs)"
     for FILE in $FILE_LIST
     do
-        echo -n "<a href=\"$(basename $FILE)\">"
+        echo -n "<a href=\"$(basename $FILE | sed -e 's/\.md$/\.html/g')\">"
         echo -n "$(basename $FILE | sed -e 's/\(..*\)\.[[:alnum:]]*/\1/')"
         echo "</a> "
     done
@@ -68,7 +68,7 @@ rawk_page () {
     rawk_submenu $1
     
     echo '<div id="main">'
-    $MDPARSER $1
+    echo "$($MDPARSER $1)"
     echo '</div>'
 
     rawk_footer $1
@@ -100,8 +100,11 @@ rawk_main () {
     # copy over target dir
     cp -r ${SRC_DIR} ${TARGET}
     cd ${TARGET}
-    echo $(pwd)
-    mkdir styles
+
+    if [ ! -d styles ]; then
+        mkdir styles
+    fi
+
     echo "$STYLESHEET" >styles/style.css
 
     # here's where we need to load in the list of files
