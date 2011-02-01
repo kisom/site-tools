@@ -21,7 +21,6 @@ rawk_header () {
     PAGE_TITLE="$(basename $1 | sed -e 's/^\(..*\)\...*$/\1/')" # get pagename
     ROOT_LINK="$(dirname $1 | sed -e "s|^\./||" \
                                   -e "s|[^/]*|..|")"
-    echo "ROOT LINK: $ROOT_LINK"
 
     # sedden death
     echo $(cat ${HDR_TPL} | sed -e "s|\${TITLE}|$SITE_TITLE|g"              \
@@ -95,12 +94,10 @@ rawk_main () {
         TARGET="$(pwd)/$(basename ${SRC_DIR}).build"
     fi
 
-    echo "SRC: $SRC_DIR"
-    echo "TGT: $TARGET"
-    return 0
     # copy over target dir
     cp -r ${SRC_DIR} ${TARGET}
     cd ${TARGET}
+    echo $(pwd)
     mkdir styles
     echo $STYLESHEET >styles/style.css
 
@@ -109,8 +106,10 @@ rawk_main () {
     for SRC_F in $(find ./ -iname \*.md -print | xargs)
 
     do
-        OUT_F="$(echo $SRC_F | sed -e 's/([[:alnum:]]*)\.[mM][dD]/\1/').html"
+        OUT_F="$(echo $SRC_F | sed -e 's/\([[:alnum:]]*\)\.[mM][dD]/\1/').html"
+        echo "* $SRC_F -> $OUT_F"
         rawk_page $SRC_F > $OUT_F
+        rm $SRC_F
     done
 
 }
