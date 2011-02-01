@@ -2,12 +2,15 @@
 # .:[ rawk - rage against web frameworks ]:.
 # 
 # generates a static content from a tree of markdown files and other content
-# originally written by 4096R/B7B720D6  "Kyle Isom <coder@kyleisom.net>"
+# originally written by 4096r/b7b720d6  "kyle isom <coder@kyleisom.net>"
 # based on the suckless webframework (sw) by nibblesec
 # 
 # released as public domain software - for curiosity's sake, i'd be interested 
 # in hearing if you take this and tinker with it, though you are far from 
 # obligated to do so.
+# 
+# in the event your locale's public domain laws are less strict than the ISC
+# license, this code is licensed under the ISC license. 
 
 CONF_FILE="rawkrc"
 SITE_ROOT="/"
@@ -49,7 +52,8 @@ rawk_submenu () {
     done
     
     FILE_LIST="$(eval ls -1 $(dirname $1) $FC )"
-    FILE_LIST="$(echo $FILE_LIST | sed -e 's/\.md /\.html /g' | uniq | sort | xargs)"
+    FILE_LIST="$(echo $FILE_LIST | sed -e 's/\.md /\.html /g')"
+    FILE_LIST="$(echo $FILE_LIST | uniq | sort | xargs)"
     for FILE in $FILE_LIST
     do
         echo -n "<a href=\"$(basename $FILE | sed -e 's/\.md$/\.html/g')\">"

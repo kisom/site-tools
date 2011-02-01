@@ -12,8 +12,15 @@ design goals:
 
 
 installation
-    1. run config.sh (pass -h to see help options)
-    2. make && make install
+    1. make 
+    2. optionally, make PREFIX=<path to install to>
+    by default PREFIX is /usr/local
+
+quick notes:
+    * rawk looks for rawkrc in the current directory
+    * rawk expects at a minimum a path to a tree of markdown files
+    * rawk also looks for a second argument which is the output directory
+    * if no output directory rawk will use $PWD/$(basename $1).build
 
 quick start (the way i do it):
     1. create a directory for your site, ex. brokenlcd.net
@@ -54,9 +61,6 @@ customisations
     the default is SITE_ROOT="/" so the root links are <a href="/index.html">
     * you are encouraged to tweak the source so it does precisely what you wish
 
-notes:
-    * rawk looks for rawkrc in the current directory
-    * rawk expects at a minimum a path to a tree of markdown files
-    * rawk also looks for a second argument which is the output directory
-    * if no output directory rawk will use $PWD/$(basename $1).build
-
+links
+    $PREFIX/share/rawk/
+    http://www.brokenlcd.net/code/rawk.html
