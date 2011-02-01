@@ -35,12 +35,12 @@ rawk_submenu () {
     FILE_LIST=""
 
     # add cwd
-    echo "<div id=\"side-bar\">"
-    echo "<a href=\"index.html\">.</a> "
+    echo '<div id="side-bar">'
+    echo '<a href="index.html">.</a> '
 
     # parent
     if [ ! "$(dirname $1)" = "." ]; then
-        echo "<a href=\"../index.html\">..</a> "
+        echo '<a href="../index.html">..</a> '
     fi
 
     for filter in $BL
@@ -56,6 +56,7 @@ rawk_submenu () {
         echo -n "$(basename $FILE | sed -e 's/\(..*\)\.[[:alnum:]]*/\1/')"
         echo "</a> "
     done
+    echo "</div>"
 }
 
 rawk_page () {
@@ -66,7 +67,9 @@ rawk_page () {
     rawk_header $1
     rawk_submenu $1
     
+    echo '<div id="main">'
     $MDPARSER $1
+    echo '</div>'
 
     rawk_footer $1
 }
